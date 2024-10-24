@@ -34,6 +34,8 @@ func infixToPostfix(infix string) string {
       }
 
       if isOperator(char) {
+         postfix += " ";
+
          var operator Operator = Operator{
             Operator: OperatorEnum(char),
          }
