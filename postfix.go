@@ -13,6 +13,26 @@ func infixToPostfix(infix string) string {
    for _, char := range infix {
       fmt.Print(string(char), ": char ", postfix, ": postfix ", stack, ": stack \n")
 
+      if char == '(' {
+         stack = append(stack, Operator{Operator: OperatorEnum(char)})
+
+         lastPrescedence = -1;
+
+         continue
+      }
+
+      if char == ')' {
+         for rune(stack[len(stack)-1].Operator) != '(' {
+            postfix += string(rune(stack[len(stack)-1].Operator))
+
+            stack = stack[:len(stack)-1]
+         }
+         
+         stack = stack[:len(stack)-1]
+
+         continue
+      }
+
       if isOperator(char) {
          var operator Operator = Operator{
             Operator: OperatorEnum(char),
@@ -24,6 +44,8 @@ func infixToPostfix(infix string) string {
             stack = stack[:len(stack)-1]
 
             postfix += string(rune(lastItem.Operator))
+            
+            if len(stack) > 0 {lastPrescedence = stack[len(stack)-1].precedence()}
          }
          
          stack = append(stack, operator);
@@ -70,7 +92,7 @@ func (o *Operator) precedence() int {
       case Slash: return 1
       case Circumflex: return 2
       case Radical: return 2
-      default: return 9999
+      default: return -1
    }
 }
 

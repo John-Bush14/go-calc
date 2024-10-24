@@ -3,5 +3,5 @@ package main
 import "fmt" 
 
 func main() {
-   fmt.Print(infixToPostfix("a+b*c+d"))
+   fmt.Print(infixToPostfix("A+(BC+D)/E+FG"))
 }
