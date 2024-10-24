@@ -27,3 +27,9 @@ func (o *Operator) precedence() int {
       default: return 9999
    }
 }
+
+func isOperator(char_ rune) bool {
+   var char OperatorEnum = OperatorEnum(char_)
+
+   return char == Plus || char == Minus || char == Asterix || char == Slash || char == Circumflex || char == Radical
+}
