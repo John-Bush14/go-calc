@@ -1,7 +1,23 @@
 package main
 
-import "fmt" 
+import (
+	"fmt" 
+)
 
 func main() {
-   fmt.Print(calculatePostfix(infixToPostfix("(3+5^2-2*16√2)/(4+6-2^3)*(9-3*25√2)+(7^2-3^3+2*49√2)")))
+   for true {
+      fmt.Print("What would you like to calculate?\n")
+
+      
+      var calculation string; 
+
+      fmt.Scan(&calculation)
+
+
+      fmt.Print("Result: ", calculatePostfix(infixToPostfix(calculation)))
+
+      fmt.Scanln()
+
+      fmt.Print("\033[H\033[2J")
+   }
 }
