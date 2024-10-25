@@ -16,8 +16,6 @@ func calculatePostfix(postfix string) float64 {
          y, _ := strconv.ParseFloat(stack.pop(), 64)
          x, _ := strconv.ParseFloat(stack.pop(), 64)
 
-         print(x, " ", y, "", string(char), "\n")
-
          stack.append(strconv.FormatFloat(calculate(OperatorEnum(char), x, y), 'f', 2, 64))
 
          continue

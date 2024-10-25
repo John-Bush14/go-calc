@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 
 func infixToPostfix(infix string) string {
    var postfix string
@@ -26,13 +24,11 @@ func infixToPostfix(infix string) string {
       if isOperator(char) {
          postfix += " ";
 
-         for precedence(char) <= lastPrescedence && char != '(' {
+         for precedence(char) <= lastPrescedence && char != '(' && stack.len() > 0 {
             postfix += stack.pop()
             
             if stack.len() > 0 {
                lastPrescedence = precedence([]rune(stack.last())[0])
-            } else {
-               break
             }
          }
          
