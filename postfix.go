@@ -8,13 +8,13 @@ func infixToPostfix(infix string) string {
 
    var lastPrescedence int = 0
 
-   var stack []Operator
+   var stack Stack
 
    for _, char := range infix {
       fmt.Print(string(char), ": char ", postfix, ": postfix ", stack, ": stack \n")
 
       if char == '(' {
-         stack = append(stack, Operator{Operator: OperatorEnum(char)})
+         stack.append(string(char))
 
          lastPrescedence = -1;
 
@@ -22,13 +22,11 @@ func infixToPostfix(infix string) string {
       }
 
       if char == ')' {
-         for rune(stack[len(stack)-1].Operator) != '(' {
-            postfix += string(rune(stack[len(stack)-1].Operator))
-
-            stack = stack[:len(stack)-1]
+         for stack.last() != "(" {
+            postfix += stack.pop()
          }
          
-         stack = stack[:len(stack)-1]
+         stack.pop()
 
          continue
       }
@@ -36,22 +34,16 @@ func infixToPostfix(infix string) string {
       if isOperator(char) {
          postfix += " ";
 
-         var operator Operator = Operator{
-            Operator: OperatorEnum(char),
-         }
-
-         for operator.precedence() <= lastPrescedence && len(stack) > 0 {
-            var lastItem Operator = stack[len(stack)-1]
-
-            stack = stack[:len(stack)-1]
-
-            postfix += string(rune(lastItem.Operator))
+         for precedence(OperatorEnum(char)) <= lastPrescedence && stack.len() > 0 {
+            postfix += stack.pop()
             
-            if len(stack) > 0 {lastPrescedence = stack[len(stack)-1].precedence()}
+            if stack.len() > 0 {
+               lastPrescedence = precedence(lastStackOperator(stack))
+            }
          }
          
-         stack = append(stack, operator);
-         lastPrescedence = operator.precedence()
+         stack.append(string(char))
+         lastPrescedence = precedence(OperatorEnum(char))
 
          continue
       }
@@ -61,13 +53,15 @@ func infixToPostfix(infix string) string {
       postfix += string(rune(char));
    }
 
-   for len(stack) > 0 {
-      postfix += string(rune(stack[len(stack)-1].Operator))
-
-      stack = stack[:len(stack)-1]
+   for stack.len() > 0 {
+      postfix += stack.pop()
    }
 
    return postfix
+}
+
+func lastStackOperator(stack Stack) OperatorEnum {
+   return OperatorEnum([]rune(stack.last())[0])
 }
 
 
@@ -86,8 +80,8 @@ type Operator struct {
    Operator OperatorEnum
 }
 
-func (o *Operator) precedence() int {
-   switch o.Operator {
+func precedence(operator OperatorEnum) int {
+   switch operator {
       case Plus: return 0
       case Minus: return 0
       case Asterix: return 1

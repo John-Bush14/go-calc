@@ -7,32 +7,32 @@ import (
 
 
 func calculatePostfix(postfix string) float64 {
-   var stack []string
+   var stack Stack
 
-   stack = append(stack, "")
+   stack.append("")
 
    for _, char := range postfix {
       if isOperator(char) {
-         x, _ := strconv.ParseFloat(stack[len(stack)-2], 64)
-         y, _ := strconv.ParseFloat(stack[len(stack)-1], 64)
+         y, _ := strconv.ParseFloat(stack.pop(), 64)
+         x, _ := strconv.ParseFloat(stack.pop(), 64)
 
          print(x, " ", y, "", string(char), "\n")
 
-         stack = append(stack[:len(stack)-2], strconv.FormatFloat(calculate(OperatorEnum(char), x, y), 'f', 2, 64))
+         stack.append(strconv.FormatFloat(calculate(OperatorEnum(char), x, y), 'f', 2, 64))
 
          continue
       }
 
       if char == ' ' {
-         stack = append(stack, "")
+         stack.append("")
 
          continue
       }
 
-      stack[len(stack)-1] += string(char)
+      stack.Array[len(stack.Array)-1] += string(char)
    }
 
-   ans, _ := strconv.ParseFloat(stack[0], 64)
+   ans, _ := strconv.ParseFloat(stack.pop(), 64)
 
    return ans
 }
