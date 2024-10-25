@@ -11,15 +11,7 @@ func infixToPostfix(infix string) string {
    var stack Stack
 
    for _, char := range infix {
-      fmt.Print(string(char), ": char ", postfix, ": postfix ", stack, ": stack \n")
-
-      if char == '(' {
-         stack.append(string(char))
-
-         lastPrescedence = -1;
-
-         continue
-      }
+      if char == ' ' {continue}
 
       if char == ')' {
          for stack.last() != "(" {
@@ -34,23 +26,23 @@ func infixToPostfix(infix string) string {
       if isOperator(char) {
          postfix += " ";
 
-         for precedence(OperatorEnum(char)) <= lastPrescedence && stack.len() > 0 {
+         for precedence(char) <= lastPrescedence && char != '(' {
             postfix += stack.pop()
             
             if stack.len() > 0 {
-               lastPrescedence = precedence(lastStackOperator(stack))
+               lastPrescedence = precedence([]rune(stack.last())[0])
+            } else {
+               break
             }
          }
          
          stack.append(string(char))
-         lastPrescedence = precedence(OperatorEnum(char))
+         lastPrescedence = precedence(char)
 
          continue
       }
 
-      if char == ' ' {continue}
-
-      postfix += string(rune(char));
+      postfix += string(char);
    }
 
    for stack.len() > 0 {
@@ -74,14 +66,11 @@ const (
    Slash = '/'
    Circumflex = '^' 
    Radical = '√'
+   OpenBracket = '('
 )
 
-type Operator struct {
-   Operator OperatorEnum
-}
-
-func precedence(operator OperatorEnum) int {
-   switch operator {
+func precedence(operator rune) int {
+   switch OperatorEnum(operator) {
       case Plus: return 0
       case Minus: return 0
       case Asterix: return 1
@@ -95,5 +84,5 @@ func precedence(operator OperatorEnum) int {
 func isOperator(char_ rune) bool {
    var char OperatorEnum = OperatorEnum(char_)
 
-   return char == Plus || char == Minus || char == Asterix || char == Slash || char == Circumflex || char == Radical
+   return char == Plus || char == Minus || char == Asterix || char == Slash || char == Circumflex || char == Radical || char == OpenBracket
 }
