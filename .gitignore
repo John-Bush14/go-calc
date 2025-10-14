@@ -4,3 +4,4 @@ go-calc
 # Added by cargo
 
 /target
+Cargo.lock

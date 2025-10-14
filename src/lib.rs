@@ -1,14 +1,24 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub enum Token {
+    Constant(f64),
+    Operator(Operator),
+    Bracket(Side)
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub enum Side {Left, Right}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+macro_rules! define_operators {
+    ($vis:vis $enum_name:ident {$( $name:ident $(,)? )*}) => {
+        $vis enum $enum_name {
+            $($name,)*
+        }
+    };
 }
+
+define_operators!(pub Operator {
+    Addition,
+    Negation,
+    Multiplication,
+    Division,
+    Exponentiation,
+    RootExtraction
+});
