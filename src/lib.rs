@@ -1,6 +1,5 @@
 mod macros;
-
-use crate::define_operators;
+mod infix;
 use derive_more::Display;
 
 
@@ -28,5 +27,3 @@ define_operators!(x, y, pub Operator {
     Exponentiation("^") = x.powf(y),
     RootExtraction("√") = x.powf(1f64/y)
 });
-
-mod lexer;
