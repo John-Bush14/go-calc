@@ -34,3 +34,11 @@ define_operators!(x, y, pub Operator {
     Exponentiation("^") = x.powf(y),
     RootExtraction("√") = x.powf(1f64/y)
 });
+
+
+#[test]
+fn token_formating_tests() {
+    assert_eq!(format!("{}", Token::Constant(13f64)), "13");
+    assert_eq!(format!("{}", Token::Operator(Operator::Multiplication)), "*");
+    assert_eq!(format!("{}", Token::Bracket(Side::Left)), "(");
+}
