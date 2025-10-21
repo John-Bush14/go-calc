@@ -3,6 +3,13 @@ mod infix;
 use derive_more::Display;
 
 
+pub trait Tokenizer {
+    fn tokenize(str: &str) -> Option<Vec<Token>>;
+
+    fn is_valid_equation(str: &str) -> bool {Self::tokenize(str).is_some()}
+}
+
+
 #[derive(Display)]
 #[display("{_0}")]
 pub enum Token {
