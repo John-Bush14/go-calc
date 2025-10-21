@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! define_operators {
     ($a:ident, $b:ident, $vis:vis $enum_name:ident {$( $name:ident($identifier:expr) = $operation:expr ),*}) => {
-        #[derive(Display)]
+        #[derive(Display, Debug)]
         $vis enum $enum_name {
             $(
                 #[display($identifier)]

@@ -1,16 +1,25 @@
+use derive_more::Display;
+use thiserror::Error;
 mod macros;
 mod infix;
-use derive_more::Display;
 
 
 pub trait Tokenizer {
-    fn tokenize(str: &str) -> Option<Vec<Token>>;
+    fn tokenize(str: &str) -> Result<Vec<Token>, TokenizationError>;
 
-    fn is_valid_equation(str: &str) -> bool {Self::tokenize(str).is_some()}
+    fn is_valid_equation(str: &str) -> Option<TokenizationError> {Self::tokenize(str).err()}
+}
+
+#[derive(Error, Debug)]
+pub enum TokenizationError {
+    #[error("Invalid token found in equation: '{0}'")]
+    InvalidToken(String),
+    #[error("Token '{0}' at index {1} has been found to be in surplus.")]
+    Surplus(Token, usize),
 }
 
 
-#[derive(Display)]
+#[derive(Display, Debug)]
 #[display("{_0}")]
 pub enum Token {
     Constant(f64),
@@ -18,7 +27,7 @@ pub enum Token {
     Bracket(Side)
 }
 
-#[derive(Display)]
+#[derive(Display, Debug)]
 pub enum Side {
     #[display("(")]
     Left,
