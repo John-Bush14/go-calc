@@ -27,6 +27,12 @@ pub enum Token {
     Bracket(Side)
 }
 
+impl Token {
+    fn from_bracket(c: char) -> Option<Self> {
+        return Some(Token::Bracket(match c {'(' => Side::Left, ')' => Side::Right, _ => {return None}}));
+    }
+}
+
 #[derive(Display, Debug)]
 pub enum Side {
     #[display("(")]
